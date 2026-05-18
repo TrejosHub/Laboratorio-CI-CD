@@ -1,51 +1,39 @@
-# Etapa 2 — CRUD de tareas (sin tests)
+# Etapa 3 — Tests para subir cobertura sobre el 80%
 
-Esta carpeta NO es un repositorio. Es un **overlay** que se copia encima del
-repositorio `laboratorio-cicd-demo/` (que ya tiene la Etapa 1).
+Esta carpeta es un **overlay** con pruebas adicionales que se copian sobre el repo
+despues de haber aplicado la Etapa 2. No modifica codigo fuente, solo agrega tests.
 
 ## Contenido
 
 ```
-backend/
-├── app/
-│   ├── database.py             # NUEVO — conexion SQLAlchemy
-│   ├── main.py                 # SOBREESCRIBE — monta router de tareas
-│   ├── controllers/            # NUEVO — logica de negocio
-│   ├── models/                 # NUEVO — modelo Task
-│   ├── schemas/                # NUEVO — DTOs Pydantic
-│   └── views/                  # NUEVO — endpoints CRUD
-├── tests/
-│   └── conftest.py             # SOBREESCRIBE — fixture con SQLite en memoria
-├── requirements.txt            # SOBREESCRIBE — anade sqlalchemy + psycopg
-└── Dockerfile                  # SOBREESCRIBE — anade libpq-dev
-frontend/
-├── src/
-│   ├── App.tsx                 # SOBREESCRIBE — usa los componentes nuevos
-│   ├── components/             # NUEVO — TaskForm, TaskList
-│   ├── services/               # NUEVO — cliente axios
-│   └── __tests__/App.test.tsx  # SOBREESCRIBE — mockea el api
-└── package.json                # SOBREESCRIBE — anade axios
+backend/tests/
+└── test_tasks_extra.py             # tests para CRUD completo + 404 + validacion
+frontend/src/__tests__/
+├── App.flow.test.tsx               # flujo completo crear/completar/eliminar
+├── TaskForm.test.tsx               # tests del formulario
+├── TaskList.test.tsx               # tests de la lista
+└── api.test.ts                     # tests del cliente HTTP
 ```
 
 ## Como aplicar
 
-Desde la raiz del repo `laboratorio-cicd-demo/`:
+Desde la raiz del repo `laboratorio-cicd-demo/`, despues de haber hecho merge de etapa 2 en `develop`:
 
 ```powershell
 git checkout develop
-git checkout -b feature/etapa-2-crud
-Copy-Item -Recurse -Force ..\etapa-2\backend .
-Copy-Item -Recurse -Force ..\etapa-2\frontend .
+git checkout -b feature/etapa-3-tests
+Copy-Item -Recurse -Force ..\etapa-3\backend .
+Copy-Item -Recurse -Force ..\etapa-3\frontend .
 git add .
-git commit -m "etapa 2: agregar CRUD de tareas"
-git push -u origin feature/etapa-2-crud
+git commit -m "etapa 3: agregar tests para alcanzar cobertura"
+git push -u origin feature/etapa-3-tests
 ```
 
-Abre PR a `develop` (pasa lint+tests). Mergea y luego abre PR de `develop` a `master` (**falla** por cobertura <80% y Quality Gate FAILED).
+PR a `develop` (pasa). Mergea y luego PR de `develop` a `master`: **ahora pasa** todos los checks.
 
 ## Resultado esperado
 
 - PR a develop: ✅ verde
-- PR a master: ❌ rojo (test-backend-coverage, test-frontend-coverage, sonarcloud)
-- Coverage backend: ~25-30% (solo /health esta probado)
-- Coverage frontend: ~30-40% (solo App montaje basico)
+- PR a master: ✅ verde (lint, cobertura ≥80%, Quality Gate PASSED, docker-build OK)
+- Coverage backend: ~96%
+- Coverage frontend: ~100%
