@@ -7,6 +7,7 @@ Cubre:
   * actualizar tarea (200, 404 y campos parciales)
   * toggle (200 y 404)
   * eliminar tarea (204 y 404)
+  ..
   * contador (sin y con filtro)
   * helpers de dominio del modelo (mark_completed / mark_pending)
 """
